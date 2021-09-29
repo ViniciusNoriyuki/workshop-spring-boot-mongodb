@@ -5,6 +5,7 @@ import com.noriyuki.workshopmongo.dto.UserDTO;
 import com.noriyuki.workshopmongo.repository.UserRepository;
 import com.noriyuki.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,14 @@ public class UserService {
         return userRepository.save(obj);
     }
 
+    public void delete(String id) {
+        findById(id);
+
+        userRepository.deleteById(id);
+    }
+
     public User fromDTO(UserDTO objDto) {
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
+
 }
