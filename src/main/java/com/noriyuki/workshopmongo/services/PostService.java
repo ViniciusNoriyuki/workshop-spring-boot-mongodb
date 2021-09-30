@@ -39,6 +39,13 @@ public class PostService {
         return postRepository.fullSearch(text, minDate, maxDate);
     }
 
+    public Post delete(String id) {
+        Post post = findById(id);
+        postRepository.deleteById(id);
+
+        return post;
+    }
+
     public Post fromDTO(User user, PostDTO objDto) {
         return new Post(null, new Date(System.currentTimeMillis()), objDto.getTitle(), objDto.getBody(), new AuthorDTO(user));
     }

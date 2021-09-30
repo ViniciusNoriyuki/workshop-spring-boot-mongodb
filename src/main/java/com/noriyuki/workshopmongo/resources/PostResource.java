@@ -31,7 +31,7 @@ public class PostResource {
         Post obj = postService.fromDTO(user, objDto);
         obj = postService.insert(obj);
 
-        userService.updateUserNewPost(user, obj);
+        userService.updateReferenceUserNewPost(user, obj);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
@@ -65,5 +65,13 @@ public class PostResource {
         List<Post> list = postService.fullSearch(text, min, max);
 
         return ResponseEntity.ok().body(list);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable String id) {
+        Post post = postService.delete(id);
+        userService.removeReferenceUserPost(post);
+
+        return ResponseEntity.noContent().build();
     }
 }
