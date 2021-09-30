@@ -2,7 +2,6 @@ package com.noriyuki.workshopmongo.domain;
 
 import com.noriyuki.workshopmongo.dto.AuthorDTO;
 import com.noriyuki.workshopmongo.dto.CommentDTO;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
