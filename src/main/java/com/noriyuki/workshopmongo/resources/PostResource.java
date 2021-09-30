@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PostResource {
     private UserService userService;
 
     @PostMapping(value = "/user/{id}")
-    public ResponseEntity<Void> insertPost(@PathVariable String id, @RequestBody PostDTO objDto) {
+    public ResponseEntity<Void> insertPost(@PathVariable String id, @Valid @RequestBody PostDTO objDto) {
         User user = userService.findById(id);
 
         Post obj = postService.fromDTO(user, objDto);
