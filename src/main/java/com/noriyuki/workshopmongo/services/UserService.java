@@ -1,5 +1,6 @@
 package com.noriyuki.workshopmongo.services;
 
+import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
 import com.noriyuki.workshopmongo.dto.UserDTO;
 import com.noriyuki.workshopmongo.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +55,10 @@ public class UserService {
 
     public User fromDTO(UserDTO objDto) {
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
+
+    public void updateUserNewPost(User user, Post newPost) {
+        user.getPosts().addAll(Arrays.asList(newPost));
+        userRepository.save(user);
     }
 }

@@ -27,8 +27,11 @@ public class PostResource {
     @PostMapping(value = "/user/{id}")
     public ResponseEntity<Void> insertPost(@PathVariable String id, @RequestBody PostDTO objDto) {
         User user = userService.findById(id);
+
         Post obj = postService.fromDTO(user, objDto);
         obj = postService.insert(obj);
+
+        userService.updateUserNewPost(user, obj);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
