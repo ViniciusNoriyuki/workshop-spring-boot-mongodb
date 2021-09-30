@@ -1,6 +1,9 @@
 package com.noriyuki.workshopmongo.services;
 
 import com.noriyuki.workshopmongo.domain.Post;
+import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.dto.AuthorDTO;
+import com.noriyuki.workshopmongo.dto.PostDTO;
 import com.noriyuki.workshopmongo.repository.PostRepository;
 import com.noriyuki.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,10 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    public Post insert(Post obj) {
+        return postRepository.save(obj);
+    }
+
     public Post findById(String id) {
         Optional<Post> obj = postRepository.findById(id);
 
@@ -30,5 +37,9 @@ public class PostService {
         maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000);    // Para comparar até as 24hrs daquele dia (em milissegundos)
 
         return postRepository.fullSearch(text, minDate, maxDate);
+    }
+
+    public Post fromDTO(User user, PostDTO objDto) {
+        return new Post(null, new Date(System.currentTimeMillis()), objDto.getTitle(), objDto.getBody(), new AuthorDTO(user));
     }
 }
