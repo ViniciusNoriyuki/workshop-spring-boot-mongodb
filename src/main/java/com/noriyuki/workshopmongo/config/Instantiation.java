@@ -9,6 +9,7 @@ import com.noriyuki.workshopmongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -17,6 +18,8 @@ import java.util.TimeZone;
 @Configuration
 public class Instantiation implements CommandLineRunner {
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -31,9 +34,9 @@ public class Instantiation implements CommandLineRunner {
         userRepository.deleteAll();
         postRepository.deleteAll();
 
-        User maria = new User(null, "Maria Brown", "maria@gmail.com");
-        User alex = new User(null, "Alex Green", "alex@gmail.com");
-        User bob = new User(null, "Bob Grey", "bob@gmail.com");
+        User maria = new User(null, "Maria Brown", "maria@gmail.com", bCryptPasswordEncoder.encode("123"));
+        User alex = new User(null, "Alex Green", "alex@gmail.com", bCryptPasswordEncoder.encode("456"));
+        User bob = new User(null, "Bob Grey", "bob@gmail.com", bCryptPasswordEncoder.encode("789"));
 
         userRepository.saveAll(Arrays.asList(maria, alex, bob));
 

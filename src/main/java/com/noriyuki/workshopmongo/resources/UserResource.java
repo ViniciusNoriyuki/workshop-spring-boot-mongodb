@@ -2,6 +2,7 @@ package com.noriyuki.workshopmongo.resources;
 
 import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.dto.UserNewDTO;
 import com.noriyuki.workshopmongo.dto.UserDTO;
 import com.noriyuki.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDto) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody UserNewDTO objDto) {
         User obj = userService.fromDTO(objDto);
         obj = userService.insert(obj);
 

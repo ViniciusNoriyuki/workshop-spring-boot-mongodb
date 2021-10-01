@@ -1,5 +1,6 @@
 package com.noriyuki.workshopmongo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -21,12 +22,16 @@ public class User implements Serializable {
     private String name;
     private String email;
 
+    @JsonIgnore
+    private String password;
+
     @DBRef(lazy = true)
     private List<Post> posts = new ArrayList<>();
 
-    public User(String id, String name, String email) {
+    public User(String id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 }

@@ -2,10 +2,12 @@ package com.noriyuki.workshopmongo.services;
 
 import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.dto.UserNewDTO;
 import com.noriyuki.workshopmongo.dto.UserDTO;
 import com.noriyuki.workshopmongo.repository.UserRepository;
 import com.noriyuki.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
 
@@ -53,7 +57,11 @@ public class UserService {
     }
 
     public User fromDTO(UserDTO objDto) {
-        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail(), null);
+    }
+
+    public User fromDTO(UserNewDTO objDto) {
+        return new User(null, objDto.getName(), objDto.getEmail(), bCryptPasswordEncoder.encode(objDto.getPassword()));
     }
 
     public void updateReferenceUserNewPost(User user, Post newPost) {
