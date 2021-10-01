@@ -2,6 +2,7 @@ package com.noriyuki.workshopmongo.config;
 
 import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.domain.enums.Perfil;
 import com.noriyuki.workshopmongo.dto.AuthorDTO;
 import com.noriyuki.workshopmongo.dto.CommentDTO;
 import com.noriyuki.workshopmongo.repository.PostRepository;
@@ -38,7 +39,11 @@ public class Instantiation implements CommandLineRunner {
         User alex = new User(null, "Alex Green", "alex@gmail.com", bCryptPasswordEncoder.encode("456"));
         User bob = new User(null, "Bob Grey", "bob@gmail.com", bCryptPasswordEncoder.encode("789"));
 
-        userRepository.saveAll(Arrays.asList(maria, alex, bob));
+        User vinicius = new User(null, "Vinicius Noriyuki", "viniciusnoriyuki10@gmail.com", bCryptPasswordEncoder.encode("nori123"));
+        vinicius.removePerfil(Perfil.USER);
+        vinicius.addPerfil(Perfil.ADMIN);
+
+        userRepository.saveAll(Arrays.asList(maria, alex, bob, vinicius));
 
         Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem!", "Vou viajar para São Paulo. Abraços!!!", new AuthorDTO(maria));
         Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia!!!", "Acordei feliz hoje!", new AuthorDTO(maria));
