@@ -28,6 +28,7 @@ public class PostResource {
     @PostMapping(value = "/user/{id}")
     public ResponseEntity<Void> insertPost(@PathVariable String id, @Valid @RequestBody PostDTO objDto) {
         User user = userService.findById(id);
+        userService.authorizeOwnUserOrAdmin(id);
 
         Post obj = postService.fromDTO(user, objDto);
         obj = postService.insert(obj);
@@ -70,8 +71,10 @@ public class PostResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
-        Post post = postService.delete(id);
-        userService.removeReferenceUserPost(post);
+        Post post = postService.findById(id);
+        userService.authorizeOwnUserOrAdmin(post.getAuthor().getId());
+        postService.delete(post);
+        userService.removeReferenceUserPost(post.getAuthor().getId(), post);
 
         return ResponseEntity.noContent().build();
     }

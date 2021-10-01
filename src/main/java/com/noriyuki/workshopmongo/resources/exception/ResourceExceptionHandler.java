@@ -1,5 +1,6 @@
 package com.noriyuki.workshopmongo.resources.exception;
 
+import com.noriyuki.workshopmongo.services.exception.AuthorizationException;
 import com.noriyuki.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,15 @@ public class ResourceExceptionHandler {
         for (FieldError x : e.getBindingResult().getFieldErrors()) {
             err.addError(x.getField(), x.getDefaultMessage());
         }
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+
+        StandardError err = new StandardError(System.currentTimeMillis(), status.value(), "Erro de autorização", e.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);
     }

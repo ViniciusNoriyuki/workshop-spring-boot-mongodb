@@ -58,6 +58,8 @@ public class UserResource {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> update(@PathVariable String id, @Valid @RequestBody UserDTO objDto) {
+        userService.authorizeOwnUserOrAdmin(id);
+
         User obj = userService.fromDTO(objDto);
         obj.setId(id);
         obj = userService.update(obj);

@@ -2,11 +2,15 @@ package com.noriyuki.workshopmongo.services;
 
 import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.domain.enums.Perfil;
 import com.noriyuki.workshopmongo.dto.UserNewDTO;
 import com.noriyuki.workshopmongo.dto.UserDTO;
 import com.noriyuki.workshopmongo.repository.UserRepository;
+import com.noriyuki.workshopmongo.security.UserSS;
+import com.noriyuki.workshopmongo.services.exception.AuthorizationException;
 import com.noriyuki.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +35,17 @@ public class UserService {
         Optional<User> obj = userRepository.findById(id);
 
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+    }
+
+    public void authorizeOwnUserOrAdmin(String id) {
+        UserSS userSS = authenticated();
+        if (userSS == null || !userSS.hasHole(Perfil.ADMIN) && !id.equals(userSS.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Optional<User> obj = userRepository.findById(id);
+
+        obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 
     @Transactional
@@ -69,9 +84,17 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void removeReferenceUserPost(Post obj) {
-        User user = findById(obj.getAuthor().getId());
+    public void removeReferenceUserPost(String id, Post obj) {
+        User user = findById(id);
         user.getPosts().remove(obj);
         userRepository.save(user);
+    }
+
+    public static UserSS authenticated() {
+        try {
+            return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
