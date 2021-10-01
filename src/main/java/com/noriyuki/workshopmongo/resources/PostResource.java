@@ -72,6 +72,7 @@ public class PostResource {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
         Post post = postService.findById(id);
+
         userService.authorizeOwnUserOrAdmin(post.getAuthor().getId());
         postService.delete(post);
         userService.removeReferenceUserPost(post.getAuthor().getId(), post);
