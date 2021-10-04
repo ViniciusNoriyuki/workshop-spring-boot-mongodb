@@ -4,6 +4,7 @@ import com.noriyuki.workshopmongo.domain.Post;
 import com.noriyuki.workshopmongo.domain.User;
 import com.noriyuki.workshopmongo.dto.UserNewDTO;
 import com.noriyuki.workshopmongo.dto.UserDTO;
+import com.noriyuki.workshopmongo.services.EmailService;
 import com.noriyuki.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ public class UserResource {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -42,6 +45,8 @@ public class UserResource {
     public ResponseEntity<Void> insert(@Valid @RequestBody UserNewDTO objDto) {
         User obj = userService.fromDTO(objDto);
         obj = userService.insert(obj);
+
+        emailService.sendOrderConfirmationEmail(obj);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 

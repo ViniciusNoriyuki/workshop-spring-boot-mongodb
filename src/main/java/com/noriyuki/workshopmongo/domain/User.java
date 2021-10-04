@@ -56,4 +56,16 @@ public class User implements Serializable {
     public void removePerfil(Perfil perfil) {
         perfis.remove(perfil.getCod());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\nDetalhes do Usuário:\n");
+        builder.append("Nome: ");
+        builder.append(getName());
+        builder.append("\n");
+        builder.append("Email: ");
+        builder.append(getEmail());
+        return builder.toString();
+    }
 }

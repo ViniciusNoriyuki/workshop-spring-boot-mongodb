@@ -7,8 +7,11 @@ import com.noriyuki.workshopmongo.dto.AuthorDTO;
 import com.noriyuki.workshopmongo.dto.CommentDTO;
 import com.noriyuki.workshopmongo.repository.PostRepository;
 import com.noriyuki.workshopmongo.repository.UserRepository;
+import com.noriyuki.workshopmongo.services.EmailService;
+import com.noriyuki.workshopmongo.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -59,5 +62,10 @@ public class Instantiation implements CommandLineRunner {
 
         maria.getPosts().addAll(Arrays.asList(post1, post2));
         userRepository.save(maria);
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }
