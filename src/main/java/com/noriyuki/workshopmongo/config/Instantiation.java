@@ -8,7 +8,7 @@ import com.noriyuki.workshopmongo.dto.CommentDTO;
 import com.noriyuki.workshopmongo.repository.PostRepository;
 import com.noriyuki.workshopmongo.repository.UserRepository;
 import com.noriyuki.workshopmongo.services.EmailService;
-import com.noriyuki.workshopmongo.services.MockEmailService;
+import com.noriyuki.workshopmongo.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -65,7 +65,7 @@ public class Instantiation implements CommandLineRunner {
     }
 
     @Bean
-    public EmailService emailService() {
-        return new MockEmailService();
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 }
