@@ -1,6 +1,7 @@
 package com.noriyuki.workshopmongo.dto;
 
 import com.noriyuki.workshopmongo.domain.User;
+import com.noriyuki.workshopmongo.services.validation.UserUpdate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@UserUpdate
 public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
