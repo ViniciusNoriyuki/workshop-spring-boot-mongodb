@@ -17,6 +17,8 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private EmailService emailService;
 
     private Random random = new Random();
 
@@ -29,12 +31,7 @@ public class AuthService {
         String newPassword = newPassword();
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
-
-        // TODO serviço de email de nova senha
-
-        System.out.println("Solicitação de nova senha...");
-        System.out.println("Cliente: " + user.getName());
-        System.out.println("Nova senha: " + newPassword);
+        emailService.sendNewPasswordEmail(user, newPassword);
     }
 
     private String newPassword() {

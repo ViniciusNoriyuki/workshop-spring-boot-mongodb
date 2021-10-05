@@ -28,4 +28,22 @@ public abstract class AbstractEmailService implements EmailService{
 
         return sm;
     }
+
+    @Override
+    public void sendNewPasswordEmail(User user, String newPassword) {
+        SimpleMailMessage sm = prepareNewPasswordEmail(user, newPassword);
+        sendEmail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(User user, String newPassword) {
+        SimpleMailMessage sm = new SimpleMailMessage();
+
+        sm.setTo(user.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Solicitação de nova senha");
+        sm.setSentDate(new Date(System.currentTimeMillis()));
+        sm.setText("Nova senha: " + newPassword);
+
+        return sm;
+    }
 }
